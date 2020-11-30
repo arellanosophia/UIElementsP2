@@ -17,6 +17,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Just Text"
-        android:visibility="invisible"
         android:layout_marginBottom="10dp" />
 </LinearLayout>

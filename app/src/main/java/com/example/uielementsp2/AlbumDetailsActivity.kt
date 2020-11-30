@@ -1,22 +1,17 @@
 package com.example.uielementsp2
 
-
-
 import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ContextMenu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.util.Log
+import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
-
-
 class AlbumDetailsActivity : AppCompatActivity() {
 
     lateinit var adapter : ArrayAdapter<String>
@@ -36,30 +31,66 @@ class AlbumDetailsActivity : AppCompatActivity() {
         val albumTitleTextView = findViewById<TextView>(R.id.albumTitleTextView)
         val albumImageView= findViewById<ImageView>(R.id.albumImageView)
 
-        val position: String? = intent.extras!!.getString("position")
+        val position = intent.extras!!.getString("position")
+
+
         if (position.equals("Nothing Happens")) {
             albumTitleTextView.text = position
             albumImageView.setImageResource(R.drawable.nothing_happens)
             selectedSong = arrayListOf("Are You Bored Yet?" , "Scrawny" , "Remember When" , "Treacherous Doctor" , "Do Not Wait" , "Ice Cold Pool",
                     "Are You Bored Yet?" , "Scrawny" , "Remember When" , "Treacherous Doctor" , "Do Not Wait" , "Ice Cold Pool" ,
             "Only Friend" , "Sidelines" , "Worlds Apart" , "What You Like" , "I'm Full")
-        }
-        else if (position.equals("Remote")){
+        } else if (position.equals("Remote")){
             albumTitleTextView.text = position
             albumImageView.setImageResource(R.drawable.remote)
             selectedSong = arrayListOf("Wish Me Luck","Coastlines", "Virtual Aerobics","Dig What You Dug","Nobody Gets Me(Like You)","Talk Like That")
-        }
-        else if (position.equals("Spring")){
+        } else if (position.equals("Spring")){
             albumTitleTextView.text = position
             albumImageView.setImageResource(R.drawable.spring)
             selectedSong = arrayListOf("Pictures of Girls","These Days","1980s Horror Film","Ground","Let The Sun In", "It's Only Right")
+        }else {
+            val getSong = intent.extras!!.getString("song")
+            val album_title = intent.extras!!.getString("album_title")
+            albumTitleTextView.text = album_title
+            albumImageView.setImageResource(R.drawable.uc)
+            selectedSong.add(getSong.toString())
+            adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, selectedSong)
         }
 
         adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, selectedSong)
         var albumDetailListView = findViewById<ListView>(R.id.albumDetailListView)
         albumDetailListView.adapter = adapter
-
         registerForContextMenu(albumDetailListView)
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.go_to_queue_page -> {
+                val intent = Intent(this, QueueActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.go_to_songs -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.go_to_albums -> {
+                startActivity(Intent(this, AlbumActivity::class.java))
+                true
+            }
+            R.id.add_song -> {
+                startActivity(Intent(this, AddSongActivity::class.java))
+                true
+            }
+            else ->{
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)

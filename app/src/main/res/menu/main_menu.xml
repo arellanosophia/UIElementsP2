@@ -8,4 +8,9 @@
         android:title="Songs"></item>
     <item android:id="@+id/go_to_albums"
         android:title="Albums"></item>
+    <item android:id="@+id/add_song"
+        android:title="Add Song"></item>
+    <item android:id="@+id/add_album"
+        android:title="Add Album"></item>
+
 </menu>
